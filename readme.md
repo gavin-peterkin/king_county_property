@@ -11,7 +11,7 @@
 I'm constantly updating my final table on the database. If you'd like access,
 let me know and I'll send you a username and password.
 
-Otherwise, please take a look at the prepared dataset in pickle for
+Otherwise, please take a look at the prepared dataset in pickle form
 [here](shared_data). See [this](notebooks/feature_development.ipynb) to see how
 to read in a pickle, which is a serialized pandas dataframe object.
 
