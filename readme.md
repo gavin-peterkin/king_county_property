@@ -6,6 +6,8 @@
 2. [My first draft for the final paper](notebooks/paper_first_draft.ipynb)
 3. [My first presentation slides](presentations/presentation_1.ipynb)
 
-## Note
+## Notes
 
 I'm constantly updating my final table on the database. If you'd like access, let me know and I'll send you a username and password.
+
+This research is solely for fun/education.

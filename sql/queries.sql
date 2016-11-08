@@ -40,9 +40,18 @@ parc."HistoricSite",
 parc."SteepSlopeHazard",
 parc."WaterProblems",
 rb."SqFtTotLiving",
+rb."Stories" AS no_stories,
+rb."BathFullCount" AS bath_count,
+rb."Bedrooms" AS bedroom_count,
+rb."YrBuilt" AS year_built,
+rb."YrRenovated" AS year_renovated,
+rb."HeatSystem" AS heat_system,
+rb."BrickStone" AS brick_stone,
+rb."SqFtUpperFloor" AS sq_ft_upper_floor,
 rpsale."DocumentDate" AS sale_date,
 rpsale."SalePrice" AS sale_price,
 rpsale."SaleReason" AS sale_reason,
+appr_hist."UpdateDate" AS appr_date,
 appr_hist."LandVal" AS appr_land_val,
 appr_hist."ImpsVal" AS appr_imprv_val,
 appr_hist."LandVal" + appr_hist."ImpsVal" as appr_tot_val
@@ -64,7 +73,7 @@ WHERE parc."PropType" = 'R';
 -- Engineering geographic features
 
 -- Joining in location data and buffers
-DROP TABLE IF EXISTS project.geo_residential;
+DROP TABLE IF EXISTS project.geo_residential CASCADE;
 CREATE TABLE project.geo_residential AS
 SELECT
 res.*,
@@ -80,7 +89,7 @@ ST_Buffer(geo.geom, 1000) as buffer_1000,
 ST_Buffer(geo.geom, 20000) as buffer_20000
 FROM project.parcel_new AS res
 JOIN gis.parcel_address AS geo
-ON geo.pin = res.pin
+ON geo.pin = res.pin;
 LIMIT 50000;  -- Limiting number of rows for testing FIX ME!
 /*ALTER TABLE project.geo_residential ADD gid INTEGER UNIQUE;*/
 
@@ -137,23 +146,6 @@ ALTER TABLE project."parks" ADD gid INTEGER UNIQUE;
 SELECT count(*) from project.light_rail;
 
 -- The SRID for the extra_info tables is 4326. They didn't provide it in the data. I had to figure it out from trial and error.
-/*
-CREATE TEMPORARY SEQUENCE my_seq;
-
-UPDATE my_table SET my_new_id = NEXTVAL('my_seq');
-
-ALTER TABLE my_table ALTER my_new_id SET NOT NULL;
-*/
-
-DROP MATERIALIZED VIEW IF EXISTS project.light_rail;
-CREATE MATERIALIZED VIEW project.light_rail AS
-SELECT
-land."PIN",
-land."OBJECTID" AS gid,
-land."Longitude" AS long,
-land."Latitude" AS lat,
-ST_SetSRID(ST_MakePoint(land.long, land.lat), 4326) AS geom
-FROM extra_info."Light_Rail_Map" AS lrm;
 
 
 -- Joining together all of the spatial data counts
@@ -360,12 +352,21 @@ geo_res."HistoricSite",
 geo_res."SteepSlopeHazard",
 geo_res."WaterProblems",
 geo_res."SqFtTotLiving",
+geo_res."no_stories",
+geo_res."bath_count",
+geo_res."bedroom_count",
+geo_res."year_built",
+geo_res."year_renovated",
+geo_res."heat_system",
+geo_res."brick_stone",
+geo_res."sq_ft_upper_floor",
 geo_res."sale_date",
 geo_res."sale_price",
 geo_res."sale_reason",
 geo_res."appr_land_val",
 geo_res."appr_imprv_val",
 geo_res."appr_tot_val",
+geo_res."appr_date",
 geo_res."major_str",
 geo_res."minor_str",
 geo_res."pin",
