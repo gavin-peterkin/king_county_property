@@ -371,6 +371,8 @@ geo_res."major_str",
 geo_res."minor_str",
 geo_res."pin",
 geo_res."addr_full",
+parc_add.lat,
+parc_add.lon,
 ei1."landmarks_counts100",
 ei1."landmarks_counts1000",
 ei1."landmarks_counts20000",
@@ -387,6 +389,8 @@ ei5."pub_school_counts100",
 ei5."pub_school_counts1000",
 ei5."pub_school_counts20000"
 FROM project.geo_residential AS geo_res
+LEFT JOIN gis.parcel_address AS parc_add
+ON geo_res.pin = parc_add.pin
 LEFT JOIN project.landmarks_counts AS ei1
 ON geo_res.pin = ei1.pin
 LEFT JOIN project.light_rail_counts AS ei2
